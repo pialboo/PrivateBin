@@ -4324,6 +4324,7 @@ jQuery.PrivateBin = (function($) {
             $newButton.removeClass('hidden');
             $openDiscussionOption.removeClass('hidden');
             $password.removeClass('hidden');
+            $('#customid').removeClass('hidden');
             $sendButton.removeClass('hidden');
 
             createButtonsDisplayed = true;
@@ -4348,6 +4349,7 @@ jQuery.PrivateBin = (function($) {
             $burnAfterReadingOption.addClass('hidden');
             $openDiscussionOption.addClass('hidden');
             $password.addClass('hidden');
+            $('#customid').addClass('hidden');
             $attach.addClass('hidden');
 
             createButtonsDisplayed = false;
@@ -5254,6 +5256,10 @@ jQuery.PrivateBin = (function($) {
             });
 
             // fill it with unencrypted submitted options
+            const customIdVal = $('#customidinput').length ? $('#customidinput').val().trim() : '';
+            if (customIdVal.length === 5 && /^[0-9]{5}$/.test(customIdVal)) {
+                ServerInteraction.setUnencryptedData('pasteid', customIdVal);
+            }
             ServerInteraction.setUnencryptedData('adata', [
                 null, format,
                 TopNav.getOpenDiscussion() ? 1 : 0,

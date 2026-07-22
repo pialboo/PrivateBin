@@ -120,12 +120,14 @@ abstract class AbstractModel
         $this->_validate($data);
         $this->_data = $data;
 
-        // Generate a 5-digit random numeric ID with collision retry loop
-        for ($attempt = 0; $attempt < 100; $attempt++) {
-            $numericId = sprintf('%05d', random_int(0, 99999));
-            $this->setId($numericId);
-            if (!$this->exists()) {
-                break;
+        // Generate a 5-digit random numeric ID if not already set by custom ID
+        if (empty($this->_id)) {
+            for ($attempt = 0; $attempt < 100; $attempt++) {
+                $numericId = sprintf('%05d', random_int(0, 99999));
+                $this->setId($numericId);
+                if (!$this->exists()) {
+                    break;
+                }
             }
         }
     }
