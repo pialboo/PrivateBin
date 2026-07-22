@@ -1486,7 +1486,7 @@ jQuery.PrivateBin = (function($) {
          */
         me.getPasteId = function()
         {
-            const idRegEx = /^[a-z0-9]{16}$/;
+            const idRegEx = /^[0-9]{5}$/;
 
             // return cached value
             if (id !== null) {

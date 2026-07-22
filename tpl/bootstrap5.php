@@ -150,7 +150,7 @@ if ($EMAIL) :
 <?php
 endif;
 ?>
-		<nav class="navbar navbar-expand-lg bg-body-tertiary text-nowrap mb-3">
+		<nav class="navbar navbar-expand-lg bg-body-tertiary mb-3">
 			<div class="container-fluid">
 				<a class="reloadlink navbar-brand" href="">
 					<img alt="<?php echo I18n::_($NAME); ?>" src="img/icon.svg" height="38" />
@@ -159,7 +159,7 @@ endif;
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div id="navbar" class="collapse navbar-collapse">
-					<ul class="navbar-nav me-auto gap-2 align-items-lg-center align-items-stretch">
+					<ul class="navbar-nav me-auto gap-2 align-items-center flex-wrap">
 						<li id="loadingindicator" class="navbar-text hidden me-auto">
 							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#clock" /></svg>
 							<?php echo I18n::_('Loading…'), PHP_EOL; ?>
@@ -515,19 +515,11 @@ endif;
 				</div>
 			</section>
 		</main>
-		<footer class="container-fluid mt-auto">
-			<div class="row">
-				<h5 class="col-md-5 col-xs-8"><?php echo I18n::_($NAME); ?> <small>- <?php echo I18n::_('Because ignorance is bliss'); ?></small></h5>
-				<p class="col-md-1 col-xs-4 text-center"><?php echo $VERSION; ?></p>
-				<p id="aboutbox" class="col-md-6 col-xs-12">
-					<?php echo sprintf(
-                        I18n::_('%s is a minimalist, open source online pastebin where the server has zero knowledge of stored data. Data is encrypted/decrypted %sin the browser%s using 256 bits AES.',
-                            I18n::_($NAME),
-                            '%s', '%s'
-                        ),
-                        '<i>', '</i>'), ' ', $INFO, PHP_EOL;
-                    ?>
-				</p>
+		<footer class="container-fluid mt-auto py-3">
+			<div class="row align-items-center">
+				<div class="col-12">
+					<h5 class="m-0"><?php echo I18n::_($NAME); ?> <small class="text-body-secondary fs-6">v<?php echo $VERSION; ?></small></h5>
+				</div>
 			</div>
 		</footer>
 		<div id="serverdata" class="hidden" aria-hidden="true">

@@ -120,8 +120,14 @@ abstract class AbstractModel
         $this->_validate($data);
         $this->_data = $data;
 
-        // calculate a 64 bit checksum to avoid collisions
-        $this->setId(hash('fnv1a64', $data['ct']));
+        // Generate a 5-digit random numeric ID with collision retry loop
+        for ($attempt = 0; $attempt < 100; $attempt++) {
+            $numericId = sprintf('%05d', random_int(0, 99999));
+            $this->setId($numericId);
+            if (!$this->exists()) {
+                break;
+            }
+        }
     }
 
     /**
@@ -161,7 +167,7 @@ abstract class AbstractModel
      */
     public static function isValidId($id)
     {
-        return (bool) preg_match('#\A[a-f0-9]{16}\z#', (string) $id);
+        return (bool) preg_match('#\A[0-9]{5}\z#', (string) $id);
     }
 
     /**
