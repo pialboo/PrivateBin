@@ -687,8 +687,7 @@ jQuery.PrivateBin = (function($) {
          * @private
          * @prop   {string[]}
          * @readonly
-         */
-        const supportedLanguages = ['ar', 'bg', 'ca', 'co', 'cs', 'de', 'el', 'es', 'et', 'fa', 'fi', 'fr', 'he', 'hu', 'id', 'it', 'ja', 'jbo', 'lt', 'no', 'nl', 'pl', 'pt', 'oc', 'ro', 'ru', 'sk', 'sl', 'sv', 'th', 'tr', 'uk', 'zh'];
+         */        const supportedLanguages = ['ar', 'bg', 'ca', 'co', 'cs', 'de', 'el', 'es', 'et', 'fa', 'fi', 'fr', 'he', 'hu', 'id', 'it', 'ja', 'jbo', 'lt', 'no', 'nl', 'pl', 'pt', 'oc', 'ro', 'ru', 'sk', 'sl', 'sv', 'th', 'tr', 'uk', 'zh', 'zh-TW'];
 
         /**
          * built in language
@@ -789,7 +788,7 @@ jQuery.PrivateBin = (function($) {
                 // for all other languages than English for which this behaviour
                 // is expected as it is built-in, log error
                 if (language !== null && language !== 'en') {
-                    console.error('Missing translation for: \'' + messageId + '\' in language ' + language);
+                    console.error('Missing translation for \'' + messageId + '\' in language ' + language);
                     // fallback to English
                 }
 
@@ -881,6 +880,7 @@ jQuery.PrivateBin = (function($) {
                 case 'oc':
                 case 'tr':
                 case 'zh':
+                case 'zh-TW':
                     return n > 1 ? 1 : 0;
                 case 'he':
                     return n === 1 ? 0 : (n === 2 ? 1 : ((n < 0 || n > 10) && (n % 10 === 0) ? 2 : 3));
@@ -918,11 +918,11 @@ jQuery.PrivateBin = (function($) {
 
             // auto-select language based on browser settings
             if (newLanguage.length === 0) {
-                newLanguage = (navigator.language || navigator.userLanguage || 'en');
-                if (newLanguage.indexOf('-') > 0) {
+                newLanguage = $('html').attr('lang') || navigator.language || navigator.userLanguage || 'en';
+                if (supportedLanguages.indexOf(newLanguage) === -1 && newLanguage.indexOf('-') > 0) {
                     newLanguage = newLanguage.split('-')[0];
                 }
-            }
+            }}
 
             // if language is already used skip update
             if (newLanguage === language) {
