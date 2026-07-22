@@ -922,7 +922,7 @@ jQuery.PrivateBin = (function($) {
                 if (supportedLanguages.indexOf(newLanguage) === -1 && newLanguage.indexOf('-') > 0) {
                     newLanguage = newLanguage.split('-')[0];
                 }
-            }}
+            }
 
             // if language is already used skip update
             if (newLanguage === language) {
