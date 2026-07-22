@@ -20,6 +20,29 @@ body > footer {
 	width: 100%;
 }
 
+/* Navbar 雙排分欄與元件對齊高度優化 */
+.navbar .form-label,
+.navbar .form-check-label,
+.navbar .nav-link,
+.navbar .btn,
+.navbar label,
+.navbar span {
+	white-space: nowrap !important;
+	word-break: keep-all !important;
+}
+
+.navbar .form-check {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	margin-bottom: 0;
+}
+
+.navbar .form-check-input {
+	margin-top: 0;
+	float: none;
+}
+
 .hidden {
 	display: none !important;
 }

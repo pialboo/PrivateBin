@@ -150,210 +150,139 @@ if ($EMAIL) :
 <?php
 endif;
 ?>
-		<nav class="navbar navbar-expand-lg bg-body-tertiary mb-3">
-			<div class="container-fluid">
-				<a class="reloadlink navbar-brand" href="">
-					<img alt="<?php echo I18n::_($NAME); ?>" src="img/icon.svg" height="38" />
-				</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="<?php echo I18n::_('Toggle navigation'); ?>">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div id="navbar" class="collapse navbar-collapse">
-					<ul class="navbar-nav me-auto gap-2 align-items-center flex-wrap">
-						<li id="loadingindicator" class="navbar-text hidden me-auto">
-							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#clock" /></svg>
-							<?php echo I18n::_('Loading…'), PHP_EOL; ?>
-						</li>
-						<li class="nav-item d-flex flex-lg-row flex-column">
-							<button id="retrybutton" type="button" class="reloadlink hidden btn btn-primary d-flex justify-content-center align-items-center gap-1">
-								<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#repeat" /></svg> <?php echo I18n::_('Retry'), PHP_EOL; ?>
-							</button>
-						</li>
-						<li class="nav-item d-flex flex-lg-row flex-column gap-2">
-							<button id="newbutton" type="button" class="hidden btn btn-secondary flex-fill d-flex justify-content-center align-items-center gap-1">
-								<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#file-earmark" /></svg> <?php echo I18n::_('New'), PHP_EOL; ?>
-							</button>
-							<button id="clonebutton" type="button" class="hidden btn btn-secondary flex-fill d-flex justify-content-center align-items-center gap-1">
-								<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#copy" /></svg> <?php echo I18n::_('Clone'), PHP_EOL; ?>
-							</button>
-							<button id="rawtextbutton" type="button" class="hidden btn btn-secondary flex-fill d-flex justify-content-center align-items-center gap-1">
-								<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#filetype-txt" /></svg> <?php echo I18n::_('Raw text'), PHP_EOL; ?>
-							</button>
-							<button id="downloadtextbutton" type="button" class="hidden btn btn-secondary flex-fill d-flex justify-content-center align-items-center gap-1">
-								<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#download" /></svg> <?php echo I18n::_('Save document'), PHP_EOL; ?>
-							</button>
-<?php
-if ($EMAIL) :
-?>
-
-							<button id="emaillink" type="button" class="hidden btn btn-secondary flex-fill d-flex justify-content-center align-items-center gap-1">
-								<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#envelope" /></svg> <?php echo I18n::_('Email'), PHP_EOL; ?>
-							</button>
-<?php
-endif;
-if ($QRCODE) :
-?>
-							<button id="qrcodelink" type="button" data-bs-toggle="modal" data-bs-target="#qrcodemodal" class="hidden btn btn-secondary flex-fill d-flex justify-content-center align-items-center gap-1">
-								<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#qr-code" /></svg> <?php echo I18n::_('QR code'), PHP_EOL; ?>
-							</button>
-<?php
-endif;
-?>
-						</li>
-						<li id="expiration" class="nav-item d-flex hidden">
-							<label for="pasteExpiration" class="form-label my-auto me-1"><?php echo I18n::_('Expires'); ?>:</label>
-							<select id="pasteExpiration" name="pasteExpiration" class="form-select">
-<?php
-foreach ($EXPIRE as $key => $value) :
-?>
-								<option value="<?php echo $key; ?>"<?php
-    if ($key === $EXPIREDEFAULT) :
-?> selected="selected"<?php
-    endif;
-?>><?php echo $value; ?></option>
-<?php
-endforeach;
-?>
-							</select>
-						</li>
-						<li class="nav-item">
-							<div id="burnafterreadingoption" class="navbar-text form-check hidden">
-								<input class="form-check-input" type="checkbox" id="burnafterreading" name="burnafterreading"<?php
-if ($BURNAFTERREADINGSELECTED) :
-?> checked="checked"<?php
-endif;
-?> />
-								<label class="form-check-label" for="burnafterreading">
-									<?php echo I18n::_('Burn after reading'), PHP_EOL; ?>
-								</label>
-							</div>
-						</li>
-<?php
-if ($DISCUSSION) :
-?>
-						<li class="nav-item">
-							<div id="opendiscussionoption" class="navbar-text form-check hidden">
-								<input class="form-check-input" type="checkbox" id="opendiscussion" name="opendiscussion"<?php
-	if ($OPENDISCUSSION) :
-?> checked="checked"<?php
-	endif;
-?> />
-								<label class="form-check-label" for="opendiscussion">
-									<?php echo I18n::_('Open discussion'), PHP_EOL; ?>
-								</label>
-							</div>
-						</li>
-<?php
-endif;
-if ($PASSWORD) :
-?>
-						<li class="nav-item">
-							<div id="password" class="navbar-form hidden">
-								<div class="input-group">
-									<input type="password" id="passwordinput" placeholder="<?php echo I18n::_('Password (recommended)'); ?>" aria-label="<?php echo I18n::_('Password (recommended)'); ?>" class="form-control input-password" size="23" />
-									<button class="btn btn-outline-secondary toggle-password" type="button" title="<?php echo I18n::_('Show password'); ?>" aria-label="<?php echo I18n::_('Show password'); ?>">
-										<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#eye" /></svg>
-									</button>
-								</div>
-							</div>
-						</li>
-<?php
-endif;
-if ($FILEUPLOAD) :
-?>
-						<li id="attach" class="nav-item hidden dropdown">
-							<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"><?php echo I18n::_('Attach a file'); ?></a>
-							<ul class="dropdown-menu px-2">
-								<li id="filewrap">
-									<div>
-										<input type="file" id="file" name="file" class="form-control" multiple />
-									</div>
-									<div id="dragAndDropFileName" class="dragAndDropFile"><?php echo I18n::_('alternatively drag & drop a file or paste an image from the clipboard'); ?></div>
-								</li>
-								<li id="customattachment" class="hidden d-flex flex-column px-3"></li>
-								<li>
-									<a id="fileremovebutton" href="#" class="dropdown-item">
-										<?php echo I18n::_('Remove attachment'), PHP_EOL; ?>
-									</a>
-								</li>
-							</ul>
-						</li>
-<?php
-endif;
-?>
-						<li id="formatter" class="nav-item d-flex hidden">
-							<label for="pasteFormatter" class="form-label my-auto me-1"><?php echo I18n::_('Format'); ?>:</label>
-							<select id="pasteFormatter" name="pasteFormatter" class="form-select">
-<?php
-    foreach ($FORMATTER as $key => $value) :
-?>
-								<option value="<?php echo $key; ?>"<?php
-        if ($key === $FORMATTERDEFAULT) :
-?> selected="selected"<?php
-        endif;
-?>><?php echo $value; ?></option>
-<?php
-    endforeach;
-?>
-							</select>
-						</li>
-					</ul>
-					<ul class="navbar-nav gap-2">
-						<li class="nav-item">
-							<div class="form-check form-switch navbar-text">
-								<input id="bd-theme" type="checkbox" class="form-check-input" />
-								<label for="bd-theme" class="form-check-label"><?php echo I18n::_('Dark Mode'); ?></label>
-							</div>
-						</li>
-<?php
-if (!empty($LANGUAGESELECTION)) :
-?>
-						<li id="language" class="nav-item dropdown">
-							<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+		<nav class="navbar navbar-expand-lg bg-body-tertiary mb-3 py-2 px-3 rounded shadow-sm">
+			<div class="container-fluid flex-column align-items-stretch">
+				<!-- Row 1: Brand Logo + Primary Action Buttons + Utilities (Theme / Language) -->
+				<div class="d-flex flex-wrap align-items-center justify-content-between w-100 gap-2">
+					<div class="d-flex align-items-center gap-2 flex-wrap">
+						<a class="reloadlink navbar-brand me-2" href="">
+							<img alt="<?php echo I18n::_($NAME); ?>" src="img/icon.svg" height="36" />
+						</a>
+						<button id="retrybutton" type="button" class="reloadlink hidden btn btn-primary d-flex align-items-center gap-1">
+							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#repeat" /></svg> <?php echo I18n::_('Retry'), PHP_EOL; ?>
+						</button>
+						<button id="newbutton" type="button" class="hidden btn btn-secondary d-flex align-items-center gap-1">
+							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#file-earmark" /></svg> <?php echo I18n::_('New'), PHP_EOL; ?>
+						</button>
+						<button id="clonebutton" type="button" class="hidden btn btn-secondary d-flex align-items-center gap-1">
+							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#copy" /></svg> <?php echo I18n::_('Clone'), PHP_EOL; ?>
+						</button>
+						<button id="rawtextbutton" type="button" class="hidden btn btn-secondary d-flex align-items-center gap-1">
+							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#filetype-txt" /></svg> <?php echo I18n::_('Raw text'), PHP_EOL; ?>
+						</button>
+						<button id="downloadtextbutton" type="button" class="hidden btn btn-secondary d-flex align-items-center gap-1">
+							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#download" /></svg> <?php echo I18n::_('Save document'), PHP_EOL; ?>
+						</button>
+<?php if ($EMAIL) : ?>
+						<button id="emaillink" type="button" class="hidden btn btn-secondary d-flex align-items-center gap-1">
+							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#envelope" /></svg> <?php echo I18n::_('Email'), PHP_EOL; ?>
+						</button>
+<?php endif; ?>
+<?php if ($QRCODE) : ?>
+						<button id="qrcodelink" type="button" data-bs-toggle="modal" data-bs-target="#qrcodemodal" class="hidden btn btn-secondary d-flex align-items-center gap-1">
+							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#qr-code" /></svg> <?php echo I18n::_('QR code'), PHP_EOL; ?>
+						</button>
+<?php endif; ?>
+					</div>
+					<!-- Right side: Dark Mode + Language -->
+					<div class="d-flex align-items-center gap-3 ms-auto">
+						<div class="form-check form-switch text-nowrap my-0">
+							<input id="bd-theme" type="checkbox" class="form-check-input" />
+							<label for="bd-theme" class="form-check-label ms-1 me-2"><?php echo I18n::_('Dark Mode'); ?></label>
+						</div>
+<?php if (!empty($LANGUAGESELECTION)) : ?>
+						<div id="language" class="dropdown">
+							<a href="#" class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-1" data-bs-toggle="dropdown" aria-expanded="false">
 								<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#flag" /></svg> <?php echo $LANGUAGES[$LANGUAGESELECTION][0], PHP_EOL; ?>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-end" role="menu">
-<?php
-    foreach ($LANGUAGES as $key => $value) :
-?>
+<?php foreach ($LANGUAGES as $key => $value) : ?>
 								<li>
 									<a href="#" class="dropdown-item" data-lang="<?php echo $key; ?>">
 										<?php echo $value[0]; ?> (<?php echo $value[1]; ?>)
 									</a>
 								</li>
-<?php
-    endforeach;
-?>
+<?php endforeach; ?>
 							</ul>
-						</li>
-<?php
-endif;
-?>
-<?php
-if (!empty($TEMPLATESELECTION)) :
-?>
-						<li id="template" class="nav-item dropdown">
-							<a href="#" class="nav-link dropdown-toggle d-flex align-items-center gap-1" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-								<?php echo I18n::_('Theme'); ?>: <?php echo $TEMPLATESELECTION, PHP_EOL; ?>
-							</a>
-							<ul class="dropdown-menu dropdown-menu-end" role="menu">
-<?php
-    foreach ($TEMPLATES as $value) :
-?>
-								<li>
-									<a href="#" class="dropdown-item" data-template="<?php echo $value; ?>">
-										<?php echo $value; ?>
-									</a>
-								</li>
-<?php
-    endforeach;
-?>
-							</ul>
-						</li>
-<?php
-endif;
-?>
-					</ul>
+						</div>
+<?php endif; ?>
+					</div>
+				</div>
+
+				<!-- Row 2: Settings & Parameters (Format, Expires, Options, Password, Attach) -->
+				<div id="navbar-settings-row" class="d-flex flex-wrap align-items-center gap-3 pt-2 mt-2 border-top w-100">
+					<!-- Format -->
+					<div id="formatter" class="d-flex align-items-center hidden text-nowrap">
+						<label for="pasteFormatter" class="form-label my-auto me-2 fw-medium flex-shrink-0"><?php echo I18n::_('Format'); ?>:</label>
+						<select id="pasteFormatter" name="pasteFormatter" class="form-select form-select-sm">
+<?php foreach ($FORMATTER as $key => $value) : ?>
+							<option value="<?php echo $key; ?>"<?php if ($key === $FORMATTERDEFAULT) : ?> selected="selected"<?php endif; ?>><?php echo $value; ?></option>
+<?php endforeach; ?>
+						</select>
+					</div>
+
+					<!-- Expires -->
+					<div id="expiration" class="d-flex align-items-center hidden text-nowrap">
+						<label for="pasteExpiration" class="form-label my-auto me-2 fw-medium flex-shrink-0"><?php echo I18n::_('Expires'); ?>:</label>
+						<select id="pasteExpiration" name="pasteExpiration" class="form-select form-select-sm">
+<?php foreach ($EXPIRE as $key => $value) : ?>
+							<option value="<?php echo $key; ?>"<?php if ($key === $EXPIREDEFAULT) : ?> selected="selected"<?php endif; ?>><?php echo $value; ?></option>
+<?php endforeach; ?>
+						</select>
+					</div>
+
+					<!-- Options: Burn after reading -->
+					<div id="burnafterreadingoption" class="form-check hidden text-nowrap my-0 me-2">
+						<input class="form-check-input" type="checkbox" id="burnafterreading" name="burnafterreading"<?php if ($BURNAFTERREADINGSELECTED) : ?> checked="checked"<?php endif; ?> />
+						<label class="form-check-label" for="burnafterreading">
+							<?php echo I18n::_('Burn after reading'), PHP_EOL; ?>
+						</label>
+					</div>
+
+					<!-- Options: Open discussion -->
+<?php if ($DISCUSSION) : ?>
+					<div id="opendiscussionoption" class="form-check hidden text-nowrap my-0 me-2">
+						<input class="form-check-input" type="checkbox" id="opendiscussion" name="opendiscussion"<?php if ($OPENDISCUSSION) : ?> checked="checked"<?php endif; ?> />
+						<label class="form-check-label" for="opendiscussion">
+							<?php echo I18n::_('Open discussion'), PHP_EOL; ?>
+						</label>
+					</div>
+<?php endif; ?>
+
+					<!-- Password -->
+<?php if ($PASSWORD) : ?>
+					<div id="password" class="navbar-form hidden">
+						<div class="input-group input-group-sm">
+							<input type="password" id="passwordinput" placeholder="<?php echo I18n::_('Password (recommended)'); ?>" aria-label="<?php echo I18n::_('Password (recommended)'); ?>" class="form-control input-password" size="20" />
+							<button class="btn btn-outline-secondary toggle-password" type="button" title="<?php echo I18n::_('Show password'); ?>" aria-label="<?php echo I18n::_('Show password'); ?>">
+								<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#eye" /></svg>
+							</button>
+						</div>
+					</div>
+<?php endif; ?>
+
+					<!-- Attach File -->
+<?php if ($FILEUPLOAD) : ?>
+					<div id="attach" class="dropdown hidden text-nowrap">
+						<a href="#" class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-1" data-bs-toggle="dropdown" aria-expanded="false">
+							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#paperclip" /></svg> <?php echo I18n::_('Attach a file'); ?>
+						</a>
+						<ul class="dropdown-menu px-2">
+							<li id="filewrap">
+								<div>
+									<input type="file" id="file" name="file" class="form-control" multiple />
+								</div>
+								<div id="dragAndDropFileName" class="dragAndDropFile"><?php echo I18n::_('alternatively drag & drop a file or paste an image from the clipboard'); ?></div>
+							</li>
+							<li id="customattachment" class="hidden d-flex flex-column px-3"></li>
+							<li>
+								<a id="fileremovebutton" href="#" class="dropdown-item">
+									<?php echo I18n::_('Remove attachment'), PHP_EOL; ?>
+								</a>
+							</li>
+						</ul>
+					</div>
+<?php endif; ?>
 				</div>
 			</div>
 		</nav>
