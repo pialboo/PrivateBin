@@ -204,6 +204,7 @@ class I18n
             $languageIterator            = new AppendIterator();
             $languageIterator->append(new GlobIterator(self::_getPath('??.json')));
             $languageIterator->append(new GlobIterator(self::_getPath('???.json'))); // for jbo
+            $languageIterator->append(new GlobIterator(self::_getPath('??-??.json'))); // for zh-TW
             foreach ($languageIterator as $file) {
                 $language = $file->getBasename('.json');
                 if ($language !== 'en') {
@@ -364,6 +365,7 @@ class I18n
             case 'oc':
             case 'tr':
             case 'zh':
+            case 'zh-TW':
                 return $n > 1 ? 1 : 0;
             case 'he':
                 return $n === 1 ? 0 : ($n === 2 ? 1 : (($n < 0 || $n > 10) && ($n % 10 === 0) ? 2 : 3));
@@ -454,8 +456,8 @@ class I18n
      */
     protected static function _matchLanguage($a, $b)
     {
-        $a = explode('-', $a);
-        $b = explode('-', $b);
+        $a = explode('-', strtolower($a));
+        $b = explode('-', strtolower($b));
         for ($i = 0, $n = min(count($a), count($b)); $i < $n; ++$i) {
             if ($a[$i] !== $b[$i]) {
                 break;

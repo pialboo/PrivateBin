@@ -110,6 +110,16 @@ class I18nTest extends TestCase
         $this->assertEquals('2 小时', I18n::_('%d hours', 2), '2 hours in Chinese');
     }
 
+    public function testBrowserLanguageZhTWDetection()
+    {
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4';
+        I18n::loadTranslations();
+        $this->assertEquals('zh-TW', I18n::getLanguage(), 'browser language zh-TW');
+        $this->assertEquals('0 小時',  I18n::_('%d hours', 0), '0 hours in Traditional Chinese');
+        $this->assertEquals('1 小時',  I18n::_('%d hours', 1), '1 hour in Traditional Chinese');
+        $this->assertEquals('2 小時', I18n::_('%d hours', 2), '2 hours in Traditional Chinese');
+    }
+
     public function testBrowserLanguagePlDetection()
     {
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'pl;q=0.8,en-GB;q=0.6,en-US;q=0.4,en;q=0.2';
@@ -209,6 +219,7 @@ class I18nTest extends TestCase
         $languageIterator = new AppendIterator();
         $languageIterator->append(new GlobIterator(I18nMock::getPath('??.json')));
         $languageIterator->append(new GlobIterator(I18nMock::getPath('???.json'))); // for jbo
+        $languageIterator->append(new GlobIterator(I18nMock::getPath('??-??.json'))); // for zh-TW
         $languageCount = 0;
         foreach ($languageIterator as $file) {
             ++$languageCount;
@@ -256,6 +267,8 @@ class I18nTest extends TestCase
                 $language = substr($file->getFilename(), 0, 2);
             } elseif ($fileNameLength === 8) { // jbo.json
                 $language = substr($file->getFilename(), 0, 3);
+            } elseif ($fileNameLength === 10) { // xx-YY.json
+                $language = substr($file->getFilename(), 0, 5);
             } else {
                 continue;
             }
