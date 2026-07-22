@@ -10,6 +10,16 @@
 
 @import url("../common.css");
 
+/* 限制版面最大寬度並置中 */
+body > nav,
+body > main,
+body > footer {
+	max-width: 1050px;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	width: 100%;
+}
+
 .hidden {
 	display: none !important;
 }
