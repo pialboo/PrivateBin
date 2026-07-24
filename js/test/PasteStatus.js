@@ -172,6 +172,18 @@ describe('PasteStatus', function () {
                 return result === shortUrlString;
             }
         );
+        it(
+            'extracts the short URL from an escaped JSON response',
+            function () {
+                const clean = jsdom();
+                $('body').html('<div><div id="pastelink"></div></div>');
+                $.PrivateBin.PasteStatus.init();
+                $.PrivateBin.PasteStatus.createPasteNotification('', '');
+                $.PrivateBin.PasteStatus.extractUrl('{"shorturl":"https:\\/\\/short.example\\/12345","statusCode":200}');
+                assert.strictEqual($('#pasteurl')[0].href, 'https://short.example/12345');
+                clean();
+            }
+        );
         jsc.property(
             'extracts and updates URLs found in YOURLS proxy HTML response',
             common.jscSchemas(false),

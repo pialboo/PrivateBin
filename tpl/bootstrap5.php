@@ -241,7 +241,7 @@ endif;
 					</div>
 				</div>
 
-				<!-- Row 2: Format + Expires + Custom ID + Burn after reading + Open discussion -->
+				<!-- Row 2: Format + Expires + Short URL Number + Burn after reading + Open discussion -->
 				<div id="navbar-settings-row" class="d-flex align-items-center gap-3 pt-1 border-top w-100 flex-nowrap overflow-x-auto">
 					<!-- Format -->
 					<div id="formatter" class="d-flex align-items-center hidden text-nowrap">
@@ -263,11 +263,11 @@ endif;
 						</select>
 					</div>
 
-					<!-- Custom ID Input -->
+					<!-- Optional short URL keyword -->
 					<div id="customid" class="navbar-form hidden">
 						<div class="input-group input-group-sm">
-							<span class="input-group-text py-0 px-2 small"><?php echo I18n::_('Custom ID'); ?></span>
-							<input type="text" id="customidinput" placeholder="<?php echo I18n::_('5 digits'); ?>" aria-label="<?php echo I18n::_('Custom ID'); ?>" class="form-control" size="8" maxlength="5" pattern="[0-9]{5}" />
+							<span class="input-group-text py-0 px-2 small"><?php echo I18n::_('Short URL number'); ?></span>
+							<input type="text" id="customidinput" placeholder="<?php echo I18n::_('Up to 5 digits'); ?>" aria-label="<?php echo I18n::_('Short URL number'); ?>" class="form-control" size="8" maxlength="5" pattern="[0-9]{1,5}" inputmode="numeric" />
 						</div>
 					</div>
 
@@ -312,16 +312,6 @@ endif;
 						<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#info-circle" /></svg>
 						<?php echo I18n::encode($STATUS), PHP_EOL; ?>
 					</div>
-<?php
-if ($ISDELETED) :
-?>
-					<button type="button" class="btn btn-secondary btn-sm d-flex justify-content-center align-items-center gap-1 ms-auto" id="new-from-alert">
-						<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#repeat" /></svg>
-						<?php echo I18n::_('Start over'), PHP_EOL; ?>
-					</button>
-<?php
-endif;
-?>
 				</div>
 				<div id="errormessage" role="alert" class="<?php echo empty($ERROR) ? 'hidden' : '' ?> alert alert-danger py-2 mb-2">
 					<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#exclamation-triangle" /></svg>
@@ -375,21 +365,12 @@ if (!empty($URLSHORTENER)) :
 ?>
 					<p>
 						<button id="shortenbutton" data-shortener="<?php echo I18n::encode($URLSHORTENER); ?>"
-								<?php if ($SHORTENBYDEFAULT) : ?>
 								data-autoshorten="true"
-								<?php endif; ?>
 								type="button" class="btn btn-primary btn-block d-flex justify-content-center align-items-center gap-1"
 						>
 							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#send" /></svg> <?php echo I18n::_('Shorten URL'), PHP_EOL; ?>
 						</button>
 					</p>
-					<div role="alert" class="alert alert-danger">
-						<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#exclamation-circle" /></svg>
-						<?php if ($SHORTENBYDEFAULT) : ?>
-							<?php echo I18n::_('URL shortener is enabled by default.'), PHP_EOL; ?>
-						<?php endif; ?>
-						<?php echo I18n::_('URL shortener may expose your decrypt key in URL.'), PHP_EOL; ?>
-					</div>
 <?php
 endif;
 ?>

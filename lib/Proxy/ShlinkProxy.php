@@ -41,7 +41,7 @@ class ShlinkProxy extends AbstractProxy
      * @param string $link
      * @return array
      */
-    protected function _getProxyPayload(Configuration $conf, string $link): array
+    protected function _getProxyPayload(Configuration $conf, string $link, string $keyword): array
     {
         $shlink_api_key = $conf->getKey('apikey', 'shlink');
 

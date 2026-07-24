@@ -1,5 +1,8 @@
 {
     "PrivateBin": "PrivateBin",
+    "Short URL number": "Short URL number",
+    "Up to 5 digits": "Up to 5 digits",
+    "Short URL number is already in use.": "Short URL number is already in use.",
     "%s is a minimalist, open source online pastebin where the server has zero knowledge of stored data. Data is encrypted/decrypted %sin the browser%s using 256 bits AES.": "%s is a minimalist, open source online pastebin where the server has zero knowledge of stored data. Data is encrypted/decrypted %sin the browser%s using 256 bits AES.",
     "More information on the <a href=\"https://privatebin.info/\">project page</a>.": "More information on the <a href=\"https://privatebin.info/\">project page</a>.",
     "Because ignorance is bliss": "Because ignorance is bliss",
