@@ -86,6 +86,10 @@ class View
      */
     private function _getSri($file)
     {
+        if (file_exists($file)) {
+            $hash = base64_encode(hash_file('sha512', $file, true));
+            return ' integrity="sha512-' . $hash . '"';
+        }
         if (array_key_exists($file, $this->_variables['SRI'])) {
             return ' integrity="' . $this->_variables['SRI'][$file] . '"';
         }
