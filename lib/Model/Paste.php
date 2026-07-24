@@ -94,25 +94,31 @@ class Paste extends AbstractModel
      */
     public function store()
     {
-        // Check for improbable collision.
-        if ($this->exists()) {
-            throw new TranslatedException(self::COLLISION_ERROR, 75);
-        }
+        // A storage backend can still report a collision between the existence
+        // check and creation. Generate another ID and retry in that case.
+        for ($attempt = 0; $attempt < 100000; $attempt++) {
+            if ($this->exists()) {
+                $this->setId($this->_generateId());
+                continue;
+            }
 
-        $this->_data['meta']['salt'] = ServerSalt::generate();
+            $this->_data['meta']['salt'] = ServerSalt::generate();
+            if ($this->_store->create($this->getId(), $this->_data)) {
+                return;
+            }
 
-        // store paste
-        if (
-            $this->_store->create(
-                $this->getId(),
-                $this->_data
-            ) === false
-        ) {
+            if ($this->exists()) {
+                $this->setId($this->_generateId());
+                continue;
+            }
+
             $err = error_get_last();
             $detail = $err ? (' (' . $err['message'] . ')') : '';
             error_log('PrivateBin Paste Store Failed: ' . $detail);
             throw new TranslatedException('Error saving document. Sorry.' . $detail, 76);
         }
+
+        throw new TranslatedException(self::COLLISION_ERROR, 75);
     }
 
     /**

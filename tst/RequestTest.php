@@ -53,14 +53,13 @@ class RequestTest extends TestCase
     }
 
     /**
-     * paste IDs are 8 bytes hex encoded strings, if unlucky, this turns into
-     * a numeric string that PHP will cast to an int, for example in array keys
+     * Numeric paste IDs are cast to integers by PHP when used as array keys.
      * @see https://www.php.net/manual/en/language.types.array.php
      */
     public function testReadNumeric()
     {
         $this->reset();
-        $id                        = '1234567812345678';
+        $id                        = '12345';
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['QUERY_STRING']   = $id;
         $_GET[$id]                 = '';

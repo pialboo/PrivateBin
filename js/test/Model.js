@@ -81,7 +81,7 @@ describe('Model', function () {
         jsc.property(
             'returns the query string without separator, if any',
             common.jscUrl(true, false),
-            jsc.tuple(new Array(16).fill(common.jscHexString)),
+            jsc.tuple(new Array(5).fill(jsc.integer(0, 9))),
             jsc.array(common.jscQueryString()),
             jsc.array(common.jscQueryString()),
             function (url, pasteId, queryStart, queryEnd) {

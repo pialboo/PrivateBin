@@ -5236,9 +5236,9 @@ jQuery.PrivateBin = (function($) {
             });
 
             // fill it with unencrypted submitted options
-            const customIdVal = $('#customidinput').length ? $('#customidinput').val().trim() : '';
-            if (customIdVal.length === 5 && /^[0-9]{5}$/.test(customIdVal)) {
-                ServerInteraction.setUnencryptedData('pasteid', customIdVal);
+            const customId = $('#customidinput').length ? $('#customidinput').val().trim() : '';
+            if (/^[0-9]{5}$/.test(customId)) {
+                ServerInteraction.setUnencryptedData('pasteid', customId);
             }
             ServerInteraction.setUnencryptedData('adata', [
                 null, format,

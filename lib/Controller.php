@@ -321,7 +321,9 @@ class Controller
             try {
                 $this->_model->purge();
                 $paste = $this->_model->getPaste();
-                if (array_key_exists('pasteid', $data) && !empty($data['pasteid'])) {
+                // A valid user-selected five-digit ID takes precedence. If it
+                // is occupied, Paste::store() selects a free five-digit ID.
+                if (array_key_exists('pasteid', $data) && $data['pasteid'] !== '') {
                     $paste->setId($data['pasteid']);
                 }
                 $paste->setData($data);
