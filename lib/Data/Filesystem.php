@@ -500,7 +500,8 @@ class Filesystem extends AbstractData
 
         $writtenBytes = @file_put_contents($filename, $data);
         if ($writtenBytes === false) {
-            $writtenBytes = file_put_contents($filename, $data);
+            @chmod($filename, 0666);
+            $writtenBytes = @file_put_contents($filename, $data);
         }
         if ($writtenBytes === false || $writtenBytes < strlen($data)) {
             error_log("PrivateBin Store Error: Failed to write $filename (bytes written: " . var_export($writtenBytes, true) . ", expected: " . strlen($data) . ")");
