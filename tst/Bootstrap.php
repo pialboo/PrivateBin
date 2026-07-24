@@ -40,7 +40,7 @@ class Helper
      *
      * @var string
      */
-    private static $pasteid = '12345';
+    private static $pasteid = '5b65a01b43987bc2';
 
     /**
      * example paste version 2
@@ -75,7 +75,7 @@ class Helper
      *
      * @var string
      */
-    private static $commentid = '54321';
+    private static $commentid = '5a52eebf11c4c94b';
 
     /**
      * example comment meta data
@@ -198,7 +198,8 @@ class Helper
      */
     public static function getRandomId(): string
     {
-        return sprintf('%05d', random_int(0, 99999));
+        // 8 binary bytes are 16 characters long in hex
+        return bin2hex(random_bytes(8));
     }
 
     /**

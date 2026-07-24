@@ -267,7 +267,7 @@ endif;
 					<div id="customid" class="navbar-form hidden">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text py-0 px-2 small"><?php echo I18n::_('Custom ID'); ?></span>
-							<input type="text" id="customidinput" placeholder="<?php echo I18n::_('5 digits'); ?>" aria-label="<?php echo I18n::_('Custom ID'); ?>" class="form-control" size="8" maxlength="5" pattern="[0-9]{5}" inputmode="numeric" />
+							<input type="text" id="customidinput" placeholder="<?php echo I18n::_('5 digits'); ?>" aria-label="<?php echo I18n::_('Custom ID'); ?>" class="form-control" size="8" maxlength="5" pattern="[0-9]{5}" />
 						</div>
 					</div>
 

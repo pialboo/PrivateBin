@@ -285,7 +285,7 @@ class ControllerTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testCreateDoesNotReuseExistingId()
+    public function testCreateDuplicateId()
     {
         $options                     = parse_ini_file(CONF, true);
         $options['traffic']['limit'] = 0;
@@ -304,36 +304,8 @@ class ControllerTest extends TestCase
         $content = ob_get_contents();
         ob_end_clean();
         $response = json_decode($content, true);
-        $this->assertEquals(0, $response['status'], 'outputs success status');
-        $this->assertMatchesRegularExpression('/^[0-9]{5}$/', $response['id']);
-        $this->assertNotEquals(Helper::getPasteId(), $response['id'], 'does not reuse existing ID');
+        $this->assertEquals(1, $response['status'], 'outputs error status');
         $this->assertTrue($this->_data->exists(Helper::getPasteId()), 'paste exists after posting data');
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function testCreateUsesRequestedFiveDigitId()
-    {
-        $options                     = parse_ini_file(CONF, true);
-        $options['traffic']['limit'] = 0;
-        Helper::createIniFile(CONF, $options);
-        $paste            = Helper::getPastePost();
-        $paste['pasteid'] = '54321';
-        $file             = Helper::createTempFile();
-        file_put_contents($file, json_encode($paste));
-        Request::setInputStream($file);
-        $_SERVER['HTTP_X_REQUESTED_WITH'] = 'JSONHttpRequest';
-        $_SERVER['REQUEST_METHOD']        = 'POST';
-        $_SERVER['REMOTE_ADDR']           = '::1';
-        ob_start();
-        new Controller;
-        $content = ob_get_contents();
-        ob_end_clean();
-        $response = json_decode($content, true);
-        $this->assertEquals(0, $response['status'], 'outputs success status');
-        $this->assertEquals('54321', $response['id'], 'uses the requested ID');
-        $this->assertTrue($this->_data->exists('54321'), 'paste exists under requested ID');
     }
 
     /**

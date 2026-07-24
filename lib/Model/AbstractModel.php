@@ -120,9 +120,15 @@ abstract class AbstractModel
         $this->_validate($data);
         $this->_data = $data;
 
-        // IDs are generated server-side so that the URL suffix is always five digits.
+        // Generate a 5-digit random numeric ID if not already set by custom ID
         if (empty($this->_id)) {
-            $this->setId($this->_generateId());
+            for ($attempt = 0; $attempt < 100; $attempt++) {
+                $numericId = sprintf('%05d', random_int(0, 99999));
+                $this->setId($numericId);
+                if (!$this->exists()) {
+                    break;
+                }
+            }
         }
     }
 
@@ -164,30 +170,6 @@ abstract class AbstractModel
     public static function isValidId($id)
     {
         return (bool) preg_match('#\A[0-9]{5}\z#', (string) $id);
-    }
-
-    /**
-     * Generate an unused five-digit numeric ID.
-     *
-     * Starting at a cryptographically random point and then visiting every
-     * possible value ensures we do not give up while an unused ID remains.
-     *
-     * @access protected
-     * @throws TranslatedException
-     * @return string
-     */
-    protected function _generateId()
-    {
-        $start = random_int(0, 99999);
-        for ($offset = 0; $offset < 100000; $offset++) {
-            $id = sprintf('%05d', ($start + $offset) % 100000);
-            $this->setId($id);
-            if (!$this->exists()) {
-                return $id;
-            }
-        }
-
-        throw new TranslatedException(self::COLLISION_ERROR, 75);
     }
 
     /**

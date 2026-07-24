@@ -65,9 +65,8 @@ class ModelTest extends TestCase
         $paste = $this->_model->getPaste();
         $paste->setData($pasteData);
         $paste->store();
-        $pasteId = $paste->getId();
 
-        $paste = $this->_model->getPaste($pasteId);
+        $paste = $this->_model->getPaste(Helper::getPasteId());
         $this->assertTrue($paste->exists(), 'paste exists after storing it');
         $paste = $paste->get();
         unset(
@@ -82,25 +81,24 @@ class ModelTest extends TestCase
 
         // storing comments
         $commentData = Helper::getCommentPost();
-        $paste       = $this->_model->getPaste($pasteId);
+        $paste       = $this->_model->getPaste(Helper::getPasteId());
         $comment     = $paste->getComment(Helper::getPasteId(), Helper::getCommentId());
         $this->assertFalse($comment->exists(), 'comment does not yet exist');
 
-        $comment = $paste->getComment($pasteId);
+        $comment = $paste->getComment(Helper::getPasteId());
         $comment->setData($commentData);
         $comment->store();
-        $commentId = $comment->getId();
 
-        $comments = $this->_model->getPaste($pasteId)->get()['comments'];
+        $comments = $this->_model->getPaste(Helper::getPasteId())->get()['comments'];
         $this->assertTrue(count($comments) === 1, 'comment exists after storing it');
-        $commentData['id']              = $commentId;
+        $commentData['id']              = Helper::getPasteId();
         $commentData['meta']['created'] = current($comments)['meta']['created'];
         $commentData['meta']['icon']    = current($comments)['meta']['icon'];
         $this->assertEquals($commentData, current($comments));
 
         // deleting pastes
-        $this->_model->getPaste($pasteId)->delete();
-        $paste = $this->_model->getPaste($pasteId);
+        $this->_model->getPaste(Helper::getPasteId())->delete();
+        $paste = $this->_model->getPaste(Helper::getPasteId());
         $this->assertFalse($paste->exists(), 'paste successfully deleted');
         $this->assertEquals([], $paste->getComments(), 'comment was deleted with paste');
     }
@@ -125,17 +123,14 @@ class ModelTest extends TestCase
 
         $this->_model->getPaste(Helper::getPasteId())->delete();
         $paste = $this->_model->getPaste();
-        $paste->setId(Helper::getPasteId());
         $paste->setData($pasteData);
         $paste->store();
-        $firstId = $paste->getId();
 
         $paste = $this->_model->getPaste();
-        $paste->setId(Helper::getPasteId());
         $paste->setData($pasteData);
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(75);
         $paste->store();
-        $this->assertMatchesRegularExpression('/^[0-9]{5}$/', $paste->getId());
-        $this->assertNotEquals($firstId, $paste->getId(), 'generated paste ID is unique');
     }
 
     public function testStoreFail()
@@ -277,12 +272,12 @@ class ModelTest extends TestCase
 
     public function testPasteIdValidation()
     {
-        $this->assertTrue(Paste::isValidId('01234'), 'valid five-digit paste id');
-        $this->assertFalse(Paste::isValidId('foo'), 'invalid numeric values & length');
+        $this->assertTrue(Paste::isValidId('a242ab7bdfb2581a'), 'valid paste id');
+        $this->assertFalse(Paste::isValidId('foo'), 'invalid hex values & length');
         $this->assertFalse(Paste::isValidId('f00'), 'invalid length');
-        $this->assertFalse(Paste::isValidId('foo bar baz quux'), 'invalid numeric values');
-        $this->assertFalse(Paste::isValidId("\n01234"), 'invalid line breaks');
-        $this->assertFalse(Paste::isValidId("01234\n"), 'invalid line breaks');
+        $this->assertFalse(Paste::isValidId('foo bar baz quux'), 'invalid hex values');
+        $this->assertFalse(Paste::isValidId("\n01234567feedcafe"), 'invalid line breaks');
+        $this->assertFalse(Paste::isValidId("deadbeef01234567\n"), 'invalid line breaks');
         $this->assertFalse(Paste::isValidId('../bar/baz'), 'path attack');
     }
 
