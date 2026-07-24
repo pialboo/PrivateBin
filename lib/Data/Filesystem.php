@@ -73,6 +73,9 @@ class Filesystem extends AbstractData
         if (array_key_exists('dir', $options)) {
             $this->_path = $options['dir'];
         }
+        if (defined('PUBLIC_PATH') && !preg_match('#^/|^[a-zA-Z]:#', $this->_path)) {
+            $this->_path = PUBLIC_PATH . DIRECTORY_SEPARATOR . $this->_path;
+        }
     }
 
     /**
