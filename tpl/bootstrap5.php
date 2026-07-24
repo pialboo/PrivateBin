@@ -257,6 +257,10 @@ endif;
 						</ul>
 					</div>
 <?php endif; ?>
+
+					<button id="sendbutton" type="button" tabindex="2" class="hidden btn btn-primary btn-sm d-flex align-items-center gap-1">
+						<svg width="14" height="14" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#cloud-upload" /></svg> <?php echo I18n::_('Create'), PHP_EOL; ?>
+					</button>
 				</div>
 
 				<!-- Right side: Dark Mode + Language -->
@@ -396,11 +400,6 @@ endif;
 				<ul id="editorTabs" class="nav nav-tabs hidden mb-1">
 					<li role="presentation" class="nav-item me-1"><a class="nav-link active py-1 px-2" role="tab" id="messageedit" href="#"><?php echo I18n::_('Editor'); ?></a></li>
 					<li role="presentation" class="nav-item me-1"><a class="nav-link py-1 px-2" role="tab" id="messagepreview" href="#"><?php echo I18n::_('Preview'); ?></a></li>
-					<li role="presentation" class="nav-item ms-auto">
-						<button id="sendbutton" type="button" tabindex="2" class="hidden btn btn-primary btn-sm d-flex justify-content-center align-items-center gap-1">
-							<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#cloud-upload" /></svg> <?php echo I18n::_('Create'), PHP_EOL; ?>
-						</button>
-					</li>
 				</ul>
 			</section>
 			<section class="container-fluid section-editor flex-grow-1 d-flex flex-column min-height-0 overflow-hidden">

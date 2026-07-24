@@ -8,4 +8,4 @@ services:
     ports:
       - "8088:8080"
     volumes:
-      - .:/var/www:ro
+      - .:/var/www
