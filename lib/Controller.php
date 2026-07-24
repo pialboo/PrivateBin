@@ -153,10 +153,18 @@ class Controller
                 $this->_jsonld($this->_request->getParam('jsonld'));
                 return;
             case 'yourlsproxy':
-                $this->_shortenerproxy(new YourlsProxy($this->_conf, $this->_request->getParam('link')));
+                $this->_shortenerproxy(new YourlsProxy(
+                    $this->_conf,
+                    $this->_request->getParam('link'),
+                    $this->_request->getParam('keyword')
+                ));
                 break;
             case 'shlinkproxy':
-                $this->_shortenerproxy(new ShlinkProxy($this->_conf, $this->_request->getParam('link')));
+                $this->_shortenerproxy(new ShlinkProxy(
+                    $this->_conf,
+                    $this->_request->getParam('link'),
+                    $this->_request->getParam('keyword')
+                ));
                 break;
         }
 

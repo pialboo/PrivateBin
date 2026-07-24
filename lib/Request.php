@@ -127,6 +127,7 @@ class Request
                     'deletetoken'      => FILTER_SANITIZE_SPECIAL_CHARS,
                     'jsonld'           => FILTER_SANITIZE_SPECIAL_CHARS,
                     'link'             => FILTER_SANITIZE_URL,
+                    'keyword'          => FILTER_SANITIZE_SPECIAL_CHARS,
                     'pasteid'          => FILTER_SANITIZE_SPECIAL_CHARS,
                     'shortenviayourls' => FILTER_SANITIZE_SPECIAL_CHARS,
                     'shortenviashlink' => FILTER_SANITIZE_SPECIAL_CHARS,

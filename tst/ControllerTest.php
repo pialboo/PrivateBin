@@ -134,6 +134,11 @@ class ControllerTest extends TestCase
             $content,
             'outputs configured shortener URL correctly'
         );
+        $this->assertMatchesRegularExpression(
+            '#id="shortenbutton"[^>]*data-autoshorten="true"#',
+            $content,
+            'automatically shortens URLs when a shortener is configured'
+        );
     }
 
     public function testConf()

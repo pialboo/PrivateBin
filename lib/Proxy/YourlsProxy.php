@@ -40,19 +40,21 @@ class YourlsProxy extends AbstractProxy
      * @param string $link
      * @return array
      */
-    protected function _getProxyPayload(Configuration $conf, string $link): array
+    protected function _getProxyPayload(Configuration $conf, string $link, string $keyword): array
     {
+        $payload = [
+            'signature' => $conf->getKey('signature', 'yourls'),
+            'format'    => 'json',
+            'action'    => 'shorturl',
+            'url'       => $link,
+        ];
+        if (preg_match('/\A[0-9]{1,5}\z/', $keyword)) {
+            $payload['keyword'] = $keyword;
+        }
         return [
             'method'  => 'POST',
             'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
-            'content' => http_build_query(
-                [
-                    'signature' => $conf->getKey('signature', 'yourls'),
-                    'format'    => 'json',
-                    'action'    => 'shorturl',
-                    'url'       => $link,
-                ]
-            ),
+            'content' => http_build_query($payload),
         ];
     }
 
@@ -69,5 +71,19 @@ class YourlsProxy extends AbstractProxy
             return $data['shorturl'] ?? null;
         }
         return null;
+    }
+
+    /**
+     * Returns a specific error when YOURLS rejects an already-used keyword.
+     *
+     * @param array $data
+     * @return string
+     */
+    protected function _getError(array $data): string
+    {
+        if (stripos((string) ($data['message'] ?? ''), 'already exists') !== false) {
+            return 'Short URL number is already in use.';
+        }
+        return parent::_getError($data);
     }
 }

@@ -2055,9 +2055,12 @@ jQuery.PrivateBin = (function($) {
             if ($shortenButton.hasClass('buttondisabled')) {
                 return;
             }
+            const customKeyword = $('#customidinput').length ? $('#customidinput').val().trim() : '';
+            const shortenerUrl = `${$shortenButton.data('shortener')}${encodeURIComponent($pasteUrl.attr('href'))}` +
+                (/^[0-9]{1,5}$/.test(customKeyword) ? `&keyword=${encodeURIComponent(customKeyword)}` : '');
             $.ajax({
                 type: 'GET',
-                url: `${$shortenButton.data('shortener')}${encodeURIComponent($pasteUrl.attr('href'))}`,
+                url: shortenerUrl,
                 headers: {'Accept': 'text/html, application/xhtml+xml, application/xml, application/json'},
                 processData: false,
                 timeout: 10000,
@@ -2072,7 +2075,7 @@ jQuery.PrivateBin = (function($) {
                 // server not setup properly, in which case we follow old
                 // behavior to open it in new tab
                 window.open(
-                    `${$shortenButton.data('shortener')}${encodeURIComponent($pasteUrl.attr('href'))}`,
+                    shortenerUrl,
                     '_blank',
                     'noopener, noreferrer'
                 );
@@ -2140,7 +2143,7 @@ jQuery.PrivateBin = (function($) {
          * @function
          */
         me.checkAutoShorten = function() {
-            // check if auto-shortening is enabled
+            // URL shortening is enabled whenever a shortener is configured.
             if ($shortenButton.data('autoshorten') === true) {
                 // if so, we send the link to the shortener
                 // we do not remove the button, in case shortener fails
@@ -2160,6 +2163,28 @@ jQuery.PrivateBin = (function($) {
          */
         me.extractUrl = function(response)
         {
+            let jsonResponse;
+            if (typeof response === 'string') {
+                try {
+                    jsonResponse = JSON.parse(response);
+                } catch (error) {
+                    // Plain-text and HTML responses are handled below.
+                }
+            } else {
+                jsonResponse = response;
+            }
+            if (typeof jsonResponse === 'object' && jsonResponse !== null) {
+                if (
+                    /already exists|already in use/i.test(jsonResponse.message || '') &&
+                    $('#customidinput').length && /^[0-9]{1,5}$/.test($('#customidinput').val().trim())
+                ) {
+                    Alert.showError('Short URL number is already in use.');
+                    return;
+                }
+                response = jsonResponse.shorturl || jsonResponse.shortUrl || JSON.stringify(jsonResponse);
+            } else if (typeof jsonResponse === 'string') {
+                response = jsonResponse;
+            }
             if (typeof response === 'object') {
                 response = JSON.stringify(response);
             }
@@ -2190,7 +2215,9 @@ jQuery.PrivateBin = (function($) {
                     return;
                 }
             }
-            Alert.showError('Cannot parse response from URL shortener.');
+            const shortenerError = typeof response === 'string' ?
+                $('<div>').html(response).find('#errormessage').text().trim() : '';
+            Alert.showError(shortenerError || 'Cannot parse response from URL shortener.');
         };
 
         /**
@@ -5235,11 +5262,7 @@ jQuery.PrivateBin = (function($) {
                 );
             });
 
-            // fill it with unencrypted submitted options
-            const customIdVal = $('#customidinput').length ? $('#customidinput').val().trim() : '';
-            if (customIdVal.length === 5 && /^[0-9]{5}$/.test(customIdVal)) {
-                ServerInteraction.setUnencryptedData('pasteid', customIdVal);
-            }
+            // The optional custom number is sent with the subsequent URL-shortening request.
             ServerInteraction.setUnencryptedData('adata', [
                 null, format,
                 TopNav.getOpenDiscussion() ? 1 : 0,
@@ -6032,12 +6055,12 @@ jQuery.PrivateBin = (function($) {
             }
             me.initZ();
 
-            // if delete token is passed (i.e. document has been deleted by this
-            // access), add an event listener for the 'new' document button in the alert
+            // Show the deletion confirmation briefly, then return to a blank
+            // document without requiring a manual click.
             if (Model.hasDeleteToken()) {
-                $('#new-from-alert').on('click', function () {
+                setTimeout(function () {
                     UiHelper.reloadHome();
-                });
+                }, 2500);
                 return;
             }
 

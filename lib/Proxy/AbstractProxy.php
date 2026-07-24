@@ -47,7 +47,7 @@ abstract class AbstractProxy
      * @param Configuration $conf
      * @param string $link
      */
-    public function __construct(Configuration $conf, string $link)
+    public function __construct(Configuration $conf, string $link, string $keyword = '')
     {
         if (!filter_var($link, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED | FILTER_FLAG_QUERY_REQUIRED)) {
             $this->_error = 'Invalid URL given.';
@@ -72,7 +72,7 @@ abstract class AbstractProxy
         $data = file_get_contents($proxyUrl, false,
             stream_context_create(
                 [
-                    'http' => $this->_getProxyPayload($conf, $link),
+                    'http' => $this->_getProxyPayload($conf, $link, $keyword),
                 ]
             )
         );
@@ -99,7 +99,7 @@ abstract class AbstractProxy
         $url = $this->_extractShortUrl($jsonData);
 
         if ($url === null || empty($url)) {
-            $this->_error = 'Proxy error: Error parsing proxy response. This can be a configuration issue, like wrong or missing config keys.';
+            $this->_error = $this->_getError($jsonData);
             $this->logErrorWithClassName('Error calling proxy: ' . $data);
         } else {
             $this->_url = $url;
@@ -152,7 +152,7 @@ abstract class AbstractProxy
      * @param string $link
      * @return array
      */
-    abstract protected function _getProxyPayload(Configuration $conf, string $link): array;
+    abstract protected function _getProxyPayload(Configuration $conf, string $link, string $keyword): array;
 
     /**
      * Abstract method to extract the shortUrl from the response
@@ -161,6 +161,17 @@ abstract class AbstractProxy
      * @return ?string
      */
     abstract protected function _extractShortUrl(array $data): ?string;
+
+    /**
+     * Returns an error message for an unsuccessful shortener response.
+     *
+     * @param array $data
+     * @return string
+     */
+    protected function _getError(array $data): string
+    {
+        return 'Proxy error: Error parsing proxy response. This can be a configuration issue, like wrong or missing config keys.';
+    }
 
     /**
      * Abstract method to get the proxy URL

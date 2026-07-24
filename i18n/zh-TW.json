@@ -1,5 +1,8 @@
 {
     "PrivateBin": "PrivateBin",
+    "Short URL number": "短網址編號",
+    "Up to 5 digits": "最多 5 位數字",
+    "Short URL number is already in use.": "短網址編號已被使用，請換一組。",
     "Custom ID": "自訂編號",
     "5 digits (optional)": "5位數字 (選填)",
     "%s is a minimalist, open source online pastebin where the server has zero knowledge of stored data. Data is encrypted/decrypted %sin the browser%s using 256 bits AES.": "%s 是一個極簡且開源的線上剪貼簿，伺服器對儲存的資料完全零知識。資料會使用 256 位元 AES %s在瀏覽器端%s進行加密與解密。",
