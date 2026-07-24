@@ -5,8 +5,10 @@ cfg/*
 !cfg/conf.sample.php
 !cfg/.htaccess
 
-# Ignore data/
-/data/
+# Ignore data contents but keep data directory
+/data/*
+!/data/.gitkeep
+!/data/.htaccess
 
 # Ignore PhpDoc
 doc/*
