@@ -91,7 +91,7 @@ class Filesystem extends AbstractData
             return false;
         }
         if (!is_dir($storagedir)) {
-            mkdir($storagedir, 0700, true);
+            @mkdir($storagedir, 0777, true);
         }
         return $this->_store($file, $paste);
     }
@@ -466,7 +466,7 @@ class Filesystem extends AbstractData
     {
         // Create storage directory if it does not exist.
         if (!is_dir($this->_path)) {
-            if (!@mkdir($this->_path, 0700)) {
+            if (!@mkdir($this->_path, 0777)) {
                 return false;
             }
         }
