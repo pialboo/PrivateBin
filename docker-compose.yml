@@ -26,6 +26,13 @@ services:
     volumes:
       - .:/var/www
       - privatebin_data:/var/www/data
+    networks:
+      - shortener
 
 volumes:
   privatebin_data:
+
+networks:
+  shortener:
+    name: privatebin-shortener
+    external: true
