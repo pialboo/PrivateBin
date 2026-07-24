@@ -91,7 +91,11 @@ class Filesystem extends AbstractData
             return false;
         }
         if (!is_dir($storagedir)) {
-            @mkdir($storagedir, 0777, true);
+            if (!@mkdir($storagedir, 0777, true)) {
+                @chmod($this->_path, 0777);
+                @mkdir($storagedir, 0777, true);
+            }
+            @chmod($storagedir, 0777);
         }
         return $this->_store($file, $paste);
     }

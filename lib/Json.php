@@ -29,7 +29,7 @@ class Json
      */
     public static function encode(&$input)
     {
-        return json_encode($input, JSON_THROW_ON_ERROR);
+        return json_encode($input, JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     /**

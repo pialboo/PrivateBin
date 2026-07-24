@@ -108,7 +108,10 @@ class Paste extends AbstractModel
                 $this->_data
             ) === false
         ) {
-            throw new TranslatedException('Error saving document. Sorry.', 76);
+            $err = error_get_last();
+            $detail = $err ? (' (' . $err['message'] . ')') : '';
+            error_log('PrivateBin Paste Store Failed: ' . $detail);
+            throw new TranslatedException('Error saving document. Sorry.' . $detail, 76);
         }
     }
 
