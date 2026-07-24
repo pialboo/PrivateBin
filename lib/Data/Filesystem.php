@@ -475,8 +475,20 @@ class Filesystem extends AbstractData
         }
         $dir = dirname($filename);
         if (!is_dir($dir)) {
-            @mkdir($dir, 0777, true);
-            @chmod($dir, 0777);
+            if (!@mkdir($dir, 0777, true)) {
+                $segments = explode('/', str_replace('\\', '/', $dir));
+                $curr = '';
+                foreach ($segments as $seg) {
+                    if (strlen($seg) === 0) continue;
+                    $curr .= (empty($curr) ? '' : '/') . $seg;
+                    if (!is_dir($curr)) {
+                        @mkdir($curr, 0777);
+                        @chmod($curr, 0777);
+                    }
+                }
+            } else {
+                @chmod($dir, 0777);
+            }
         }
 
         $htaccessFile = $this->_path . DIRECTORY_SEPARATOR . '.htaccess';
