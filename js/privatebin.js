@@ -4097,9 +4097,10 @@ jQuery.PrivateBin = (function($) {
 
             clearAttachmentInput();
             AttachmentViewer.clearDragAndDrop();
+            $fileRemoveButton.addClass('hidden');
 
             // pevent '#' from appearing in the URL
-            event.preventDefault();
+            if (event) event.preventDefault();
         }
 
         /**
@@ -4658,18 +4659,7 @@ jQuery.PrivateBin = (function($) {
         me.highlightFileupload = function()
         {
             // visually indicate file uploaded
-            const $attachDropdownToggle = $attach.children('.dropdown-toggle');
-            if ($attachDropdownToggle.attr('aria-expanded') === 'false') {
-                if (Helper.isBootstrap5()) {
-                    new bootstrap.Dropdown($attachDropdownToggle).toggle();
-                } else {
-                    $attachDropdownToggle.click();
-                }
-            }
-            $fileWrap.addClass('highlight');
-            setTimeout(function () {
-                $fileWrap.removeClass('highlight');
-            }, 300);
+            $fileRemoveButton.removeClass('hidden');
         }
 
         /**
@@ -4735,6 +4725,11 @@ jQuery.PrivateBin = (function($) {
 
             // bootstrap template drop down
             $('#template ul.dropdown-menu li a').click(setTemplate);
+
+            $('#attachbtn').click(function(e) {
+                e.preventDefault();
+                $('#file').click();
+            });
 
             // bind events
             $burnAfterReading.change(changeBurnAfterReading);

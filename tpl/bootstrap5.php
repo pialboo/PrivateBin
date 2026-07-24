@@ -201,24 +201,18 @@ endif;
 <?php endif; ?>
 
 						<!-- Attach File -->
-						<div id="attach" class="dropdown hidden text-nowrap">
-							<a href="#" class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-1" data-bs-toggle="dropdown" aria-expanded="false">
-								<svg width="14" height="14" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#paperclip" /></svg> <?php echo I18n::_('Attach a file'); ?>
-							</a>
-							<ul class="dropdown-menu px-2">
-								<li id="filewrap">
-									<div>
-										<input type="file" id="file" name="file" class="form-control" multiple />
-									</div>
-									<div id="dragAndDropFileName" class="dragAndDropFile"><?php echo I18n::_('alternatively drag & drop a file or paste an image from the clipboard'); ?></div>
-								</li>
-								<li id="customattachment" class="hidden d-flex flex-column px-3"></li>
-								<li>
-									<a id="fileremovebutton" href="#" class="dropdown-item">
-										<?php echo I18n::_('Remove attachment'), PHP_EOL; ?>
-									</a>
-								</li>
-							</ul>
+						<div id="attach" class="d-inline-flex align-items-center gap-1 hidden text-nowrap">
+							<button type="button" id="attachbtn" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1">
+								<svg width="14" height="14" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#paperclip" /></svg>
+								<span id="attachtext"><?php echo I18n::_('Attach a file'); ?></span>
+							</button>
+							<input type="file" id="file" name="file" class="d-none" multiple />
+							<button type="button" id="fileremovebutton" class="btn btn-outline-danger btn-sm hidden d-flex align-items-center gap-1" title="<?php echo I18n::_('Remove attachment'); ?>">
+								<svg width="14" height="14" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#trash" /></svg>
+							</button>
+							<div id="filewrap" class="d-none"></div>
+							<div id="dragAndDropFileName" class="d-none"></div>
+							<div id="customattachment" class="d-none"></div>
 						</div>
 					</div>
 
