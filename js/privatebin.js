@@ -4085,21 +4085,13 @@ jQuery.PrivateBin = (function($) {
          */
         function removeAttachment(event)
         {
-            // if custom attachment is used, remove it first
-            if (!$customAttachment.hasClass('hidden')) {
-                AttachmentViewer.removeAttachment();
-                $customAttachment.addClass('hidden');
-                $fileWrap.removeClass('hidden');
-            }
-
-            // in any case, remove saved attachment data
+            AttachmentViewer.removeAttachment();
             AttachmentViewer.removeAttachmentData();
 
             clearAttachmentInput();
             AttachmentViewer.clearDragAndDrop();
             $fileRemoveButton.addClass('hidden');
 
-            // pevent '#' from appearing in the URL
             if (event) event.preventDefault();
         }
 

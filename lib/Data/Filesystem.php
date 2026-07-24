@@ -466,41 +466,31 @@ class Filesystem extends AbstractData
     {
         // Create storage directory if it does not exist.
         if (!is_dir($this->_path)) {
-            if (!@mkdir($this->_path, 0777)) {
-                return false;
-            }
+            @mkdir($this->_path, 0777, true);
+            @chmod($this->_path, 0777);
         }
-        $file = $this->_path . DIRECTORY_SEPARATOR . '.htaccess';
-        if (!is_file($file)) {
-            $writtenBytes = 0;
-            if ($fileCreated = @touch($file)) {
-                $writtenBytes = @file_put_contents(
-                    $file,
-                    self::HTACCESS_LINE . PHP_EOL,
-                    LOCK_EX
-                );
-            }
-            if (
-                $fileCreated === false ||
-                $writtenBytes === false ||
-                $writtenBytes < strlen(self::HTACCESS_LINE . PHP_EOL)
-            ) {
-                return false;
+        $dir = dirname($filename);
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0777, true);
+            @chmod($dir, 0777);
+        }
+
+        $htaccessFile = $this->_path . DIRECTORY_SEPARATOR . '.htaccess';
+        if (!is_file($htaccessFile)) {
+            if (@touch($htaccessFile)) {
+                @file_put_contents($htaccessFile, self::HTACCESS_LINE . PHP_EOL);
             }
         }
 
-        $fileCreated  = true;
-        $writtenBytes = 0;
-        if (!is_file($filename)) {
-            $fileCreated = @touch($filename);
+        $writtenBytes = @file_put_contents($filename, $data);
+        if ($writtenBytes === false) {
+            $writtenBytes = file_put_contents($filename, $data);
         }
-        if ($fileCreated) {
-            $writtenBytes = @file_put_contents($filename, $data, LOCK_EX);
-        }
-        if ($fileCreated === false || $writtenBytes === false || $writtenBytes < strlen($data)) {
+        if ($writtenBytes === false || $writtenBytes < strlen($data)) {
+            error_log("PrivateBin Store Error: Failed to write $filename (bytes written: " . var_export($writtenBytes, true) . ", expected: " . strlen($data) . ")");
             return false;
         }
-        chmod($filename, 0640); // protect file from access by other users on the host
+        @chmod($filename, 0666);
         return true;
     }
 
