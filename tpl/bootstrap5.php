@@ -201,7 +201,6 @@ endif;
 <?php endif; ?>
 
 						<!-- Attach File -->
-<?php if ($FILEUPLOAD) : ?>
 						<div id="attach" class="dropdown hidden text-nowrap">
 							<a href="#" class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-1" data-bs-toggle="dropdown" aria-expanded="false">
 								<svg width="14" height="14" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#paperclip" /></svg> <?php echo I18n::_('Attach a file'); ?>
@@ -221,7 +220,6 @@ endif;
 								</li>
 							</ul>
 						</div>
-<?php endif; ?>
 					</div>
 
 					<!-- Right side: Dark Mode + Language -->
@@ -314,13 +312,7 @@ endif;
 				<div id="remainingtime" role="alert" class="hidden alert alert-info py-2 mb-2">
 					<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#fire" /></svg>
 				</div>
-<?php
-if ($FILEUPLOAD) :
-?>
 				<div id="attachment" class="hidden"></div>
-<?php
-endif;
-?>
 				<div id="status" role="alert" class="d-flex align-items-center gap-2 alert alert-<?php echo $ISDELETED ? 'success' : 'info'; echo empty($STATUS) ? ' hidden' : '' ?> py-2 mb-2">
 					<div>
 						<svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="img/bootstrap-icons.svg#info-circle" /></svg>

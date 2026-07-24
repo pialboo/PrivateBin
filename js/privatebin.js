@@ -3453,12 +3453,6 @@ jQuery.PrivateBin = (function($) {
                                     .filter(item => item.kind === 'file')
                                     .map(item => item.getAsFile());
 
-                if (TopNav.isAttachmentReadonly() && files.length) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    return false;
-                }
-
                 if (files.length) {
                     readFileData(files);
                 }
