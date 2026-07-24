@@ -72,6 +72,9 @@ class View
      */
     private function _getCacheBuster($file)
     {
+        if (file_exists($file)) {
+            return '?' . filemtime($file);
+        }
         if ((bool) preg_match('#[0-9]\.m?js$#', (string) $file)) {
             return '';
         }
