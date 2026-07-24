@@ -1,10 +1,28 @@
 services:
+  # Initialise the named volume as the unprivileged user used by PHP-FPM.
+  # This prevents host/Docker volume ownership from blocking paste storage.
+  privatebin-init:
+    image: alpine:3.22
+    volumes:
+      - privatebin_data:/var/www/data
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        mkdir -p /var/www/data
+        chown -R 82:82 /var/www/data
+        chmod -R u+rwX,g+rwX /var/www/data
+    restart: "no"
+
   privatebin:
     image: privatebin/nginx-fpm-alpine
     container_name: privatebin
     restart: always
     ports:
       - "8088:8080"
+    depends_on:
+      privatebin-init:
+        condition: service_completed_successfully
     volumes:
       - .:/var/www
       - privatebin_data:/var/www/data
